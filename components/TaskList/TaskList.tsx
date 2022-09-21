@@ -3,7 +3,7 @@ import Card from '../Card/Card';
 
 const TaskList = () => {
   return (
-    <div className="flex flex-col justify-center items-center md:flex-wrap md:flex-row">
+    <div className="grid md:grid-rows-2 md:grid-cols-2">
       <Card />
       <Card />
       <Card />

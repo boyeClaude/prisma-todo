@@ -22,7 +22,7 @@ const Form: React.FC = () => {
         <label className="block text-lg" htmlFor="title">
           Title
         </label>
-        <input value={title} onChange={(e) => setTitle(e?.target?.value)} type="text" className="outline-none  border-2 w-full" />
+        <input value={title} onChange={(e) => setTitle(e?.target?.value)} type="text" className="outline-none  border-2 w-full p-2" />
       </div>
       <div className="mb-4">
         <label className="block text-lg" htmlFor="description">
@@ -31,7 +31,7 @@ const Form: React.FC = () => {
         <textarea
           value={description}
           onChange={(e) => setDescription(e?.target?.value)}
-          className="outline-none border-2 w-full"
+          className="outline-none border-2 w-full p-4"
           name="description"
           id="description"
           cols={30}
