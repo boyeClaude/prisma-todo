@@ -4,7 +4,7 @@ import Footer from '../components/Footer/Footer';
 import Form from '../components/Form/Form';
 import TaskList from '../components/TaskList/TaskList';
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   return (
     <div className="py-0 px-8">
       <Head>

@@ -5,11 +5,6 @@ const TaskList = () => {
   return (
     <div className="grid md:grid-rows-2 md:grid-cols-2">
       <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
-      <Card />
     </div>
   );
 };
