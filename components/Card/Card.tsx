@@ -1,11 +1,14 @@
 import React from 'react';
+interface ICard {
+  title: string;
+  description: string;
+}
 
-const Card = () => {
+const Card = ({ title, description }: ICard) => {
   return (
     <div className=" flex flex-col m-4 p-6 text-left border-2 border-solid border-gray-200 rounded-lg ">
       <div className="flex justify-end py-2">
-        {/* Edit Icon */}
-        <a className="cursor-pointer block">
+        <a className="cursor-pointer block" onClick={() => console.log('edit button clicked')}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"
@@ -14,8 +17,8 @@ const Card = () => {
             />
           </svg>
         </a>
-        {/* Delete Icon */}
-        <a className="cursor-pointer block pl-2" onClick={() => console.log('clicked')}>
+       
+        <a className="cursor-pointer block pl-2" onClick={() => console.log('delete button clicked')}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"
@@ -28,11 +31,10 @@ const Card = () => {
 
       <div>
         <p>
-          <span className="font-bold text-md">Title :</span> the title
+          <span className="font-bold text-md">Title :</span> {title}
         </p>
         <p>
-          <span className="font-bold text-md">Description : </span> Lorem ipsum dolor sit amet, consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing hic,
-          mollitia optio odit expedita consequuntur..
+          <span className="font-bold text-md">Description : </span> {description}
         </p>
       </div>
     </div>

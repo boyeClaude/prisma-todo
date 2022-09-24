@@ -9,6 +9,7 @@ export type ITask = {
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ITask[]>) {
-  const result = await prisma.task.findMany();
-  return res.status(200).json(result);
+  const response = await prisma.task.findMany();
+  const results = res.status(200).json(response);
+  return results;
 }
