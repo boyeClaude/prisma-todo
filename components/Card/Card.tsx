@@ -1,14 +1,25 @@
+import { Router, useRouter } from 'next/router';
 import React from 'react';
 interface ICard {
+  id: string;
   title: string;
   description: string;
 }
+async function deteleTask(id: string, router: any): Promise<void> {
+  await fetch(`/api/tasks/${id}`, {
+    method: 'DELETE',
+  });
 
-const Card = ({ title, description }: ICard) => {
+  router.reload(window.location.pathname);
+}
+
+const Card = ({ id, title, description }: ICard) => {
+  const router = useRouter();
+
   return (
     <div className=" flex flex-col m-4 p-6 text-left border-2 border-solid border-gray-200 rounded-lg ">
       <div className="flex justify-end py-2">
-        <a className="cursor-pointer block" onClick={() => console.log('edit button clicked')}>
+        <a className="cursor-pointer block" onClick={() => console.log('edit')}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"
@@ -17,8 +28,8 @@ const Card = ({ title, description }: ICard) => {
             />
           </svg>
         </a>
-       
-        <a className="cursor-pointer block pl-2" onClick={() => console.log('delete button clicked')}>
+
+        <a className="cursor-pointer block pl-2" onClick={() => deteleTask(id, router)}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"
