@@ -18,7 +18,7 @@ const Form: React.FC = () => {
       const body = { title, description };
       await fetch('http://localhost:3000/api/tasks/create', {
         method: 'POST',
-        headers: { 'Content-type': 'application/json' },
+        headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         body: JSON.stringify(body),
       });
       resetForm();
