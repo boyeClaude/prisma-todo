@@ -16,11 +16,13 @@ const Form: React.FC = () => {
     e.preventDefault();
     try {
       const body = { title, description };
-      await fetch('http://localhost:3000/api/tasks/create', {
+      await fetch('/api/tasks/create', {
         method: 'POST',
         headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        mode: 'cors',
         body: JSON.stringify(body),
       });
+
       resetForm();
       router.reload();
     } catch (error) {
