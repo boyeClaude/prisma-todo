@@ -32,7 +32,7 @@ const Home: React.FC<IHome> = (props) => {
 };
 
 export const getStaticProps: GetServerSideProps = async () => {
-  const results = await prisma.task.findMany({ orderBy: { id: 'asc' } });
+  const results = await prisma.task.findMany({ orderBy: { id: 'desc' } });
   return {
     props: { results },
   };

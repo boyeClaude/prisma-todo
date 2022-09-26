@@ -8,7 +8,7 @@ interface ICard {
 async function deteleTask(id: string, router: any): Promise<void> {
   await fetch(`/api/tasks/${id}`, {
     method: 'DELETE',
-    headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    mode: 'cors',
   });
 
   router.reload(window.location.pathname);
