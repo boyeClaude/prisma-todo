@@ -12,7 +12,7 @@ const Card: React.FC<ICard> = (props) => {
   const router = useRouter();
 
   const loadTaskList = () => {
-    reloadList();
+    reloadList && reloadList();
   };
 
   const deteleTask = async (id: string, router?: any): Promise<void> => {
