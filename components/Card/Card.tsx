@@ -1,35 +1,39 @@
-import { Router, useRouter } from 'next/router';
-import React from 'react';
+import { useRouter } from "next/router";
+import React from "react";
+import { ITask } from "../TaskList/TaskList";
 interface ICard {
-  id: string;
-  title: string;
-  description: string;
   reloadList?: () => void | undefined;
+  task: ITask;
 }
 
 const Card: React.FC<ICard> = (props) => {
-  const { id, title, description, reloadList } = props;
-  const router = useRouter();
+  const { reloadList, task } = props;
 
   const loadTaskList = () => {
     reloadList && reloadList();
   };
 
-  const deteleTask = async (id: string, router?: any): Promise<void> => {
+  const deteleTask = async (id: string): Promise<void> => {
     await fetch(`/api/tasks/${id}`, {
-      method: 'DELETE',
-      mode: 'cors',
+      method: "DELETE",
+      mode: "cors",
     });
 
     loadTaskList();
-    // router.reload(window.location.pathname);
   };
 
   return (
     <div className=" flex flex-col m-4 p-6 text-left border-2 border-solid border-gray-200 rounded-lg ">
       <div className="flex justify-end py-2">
-        <a className="cursor-pointer block" onClick={() => console.log('edit')}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <a className="cursor-pointer block">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -38,8 +42,15 @@ const Card: React.FC<ICard> = (props) => {
           </svg>
         </a>
 
-        <a className="cursor-pointer block pl-2" onClick={() => deteleTask(id)}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <a className="cursor-pointer block pl-2" onClick={() => deteleTask(task.id)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -51,10 +62,12 @@ const Card: React.FC<ICard> = (props) => {
 
       <div>
         <p>
-          <span className="font-bold text-md">Title :</span> {title}
+          <span className="font-bold text-md">Title :</span>
+          {task.title}
         </p>
         <p>
-          <span className="font-bold text-md">Description : </span> {description}
+          <span className="font-bold text-md">Description : </span>
+          {task.description}
         </p>
       </div>
     </div>

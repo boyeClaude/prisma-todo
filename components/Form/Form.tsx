@@ -1,13 +1,14 @@
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface IForm {
   reloadList: () => void;
 }
 
 const Form: React.FC<IForm> = (props) => {
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [tasks, setTasks] = useState({
+    title: "",
+    description: "",
+  });
 
   const { reloadList } = props;
 
@@ -16,19 +17,26 @@ const Form: React.FC<IForm> = (props) => {
   };
 
   const resetForm = () => {
-    setTitle('');
-    setDescription('');
+    setTasks((prevState) => ({ ...prevState, title: "", description: "" }));
+  };
+
+  const handleChange = (e: React.FormEvent | any) => {
+    e.preventDefault();
+    const fieldName = e.target.name;
+    const fieldValue = e.target.value;
+    const newTask = { [fieldName]: fieldValue };
+
+    setTasks((prevState) => ({ ...prevState, ...newTask }));
   };
 
   const formSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const body = { title, description };
-      await fetch('/api/tasks/create', {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-        mode: 'cors',
-        body: JSON.stringify(body),
+      await fetch("/api/tasks/create", {
+        method: "POST",
+        headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+        mode: "cors",
+        body: JSON.stringify(tasks),
       });
 
       resetForm();
@@ -37,6 +45,7 @@ const Form: React.FC<IForm> = (props) => {
       console.error(error);
     }
   };
+
   return (
     <div className="text-center text-lg leading-6 my-16 mx-0 ">
       <form onSubmit={formSubmit} className="border-2 border-gray-200  text-left p-4 rounded-lg">
@@ -44,23 +53,38 @@ const Form: React.FC<IForm> = (props) => {
           <label className="block text-lg" htmlFor="title">
             Title
           </label>
-          <input autoFocus value={title} onChange={(e) => setTitle(e?.target?.value)} type="text" className="outline-none  border-2 w-full p-2" />
+          <input
+            autoFocus
+            name="title"
+            value={tasks.title}
+            onChange={(event) => handleChange(event)}
+            type="text"
+            className="outline-none  border-2 w-full p-2"
+          />
         </div>
         <div className="mb-4">
           <label className="block text-lg" htmlFor="description">
             Description
           </label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e?.target?.value)}
-            className="outline-none border-2 w-full p-4"
             name="description"
+            value={tasks.description}
+            onChange={(event) => handleChange(event)}
+            className="outline-none border-2 w-full p-4"
             id="description"
             cols={30}
           ></textarea>
         </div>
 
-        <button className="px-8 py-2 text-white bg-blue-800 rounded-lg text-lg" type="submit" disabled={!title || !description}>
+        <button
+          className={
+            tasks.title && tasks.description
+              ? "px-8 py-2 text-white bg-blue-800 rounded-lg text-lg"
+              : "px-8 py-2 text-white bg-blue-100 rounded-lg text-lg"
+          }
+          type="submit"
+          disabled={!tasks.title && !tasks.description}
+        >
           Add
         </button>
       </form>
