@@ -8,15 +8,15 @@ export interface ITask {
 }
 export interface ITaskList {
   tasks: Array<ITask>;
+  reloadList?: () => void;
 }
 
-
-const TaskList = (props: ITaskList) => {
-  const { tasks } = props;
+const TaskList: React.FC<ITaskList> = (props) => {
+  const { tasks, reloadList } = props;
   return (
     <div className="grid md:grid-rows-2 md:grid-cols-2">
       {tasks && tasks.length > 0 ? (
-        tasks?.map((task: ITask) => <Card title={task.title} description={task.description} id={task.id} key={task.id} />)
+        tasks?.map((task: ITask) => <Card title={task.title} description={task.description} id={task.id} key={task.id} reloadList={reloadList} />)
       ) : (
         <div className="tex-center font-bold text-xl">No Data</div>
       )}

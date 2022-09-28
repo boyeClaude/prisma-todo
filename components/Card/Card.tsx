@@ -4,18 +4,26 @@ interface ICard {
   id: string;
   title: string;
   description: string;
-}
-async function deteleTask(id: string, router: any): Promise<void> {
-  await fetch(`/api/tasks/${id}`, {
-    method: 'DELETE',
-    mode: 'cors',
-  });
-
-  router.reload(window.location.pathname);
+  reloadList?: () => void | undefined;
 }
 
-const Card = ({ id, title, description }: ICard) => {
+const Card: React.FC<ICard> = (props) => {
+  const { id, title, description, reloadList } = props;
   const router = useRouter();
+
+  const loadTaskList = () => {
+    reloadList();
+  };
+
+  const deteleTask = async (id: string, router?: any): Promise<void> => {
+    await fetch(`/api/tasks/${id}`, {
+      method: 'DELETE',
+      mode: 'cors',
+    });
+
+    loadTaskList();
+    // router.reload(window.location.pathname);
+  };
 
   return (
     <div className=" flex flex-col m-4 p-6 text-left border-2 border-solid border-gray-200 rounded-lg ">
@@ -30,7 +38,7 @@ const Card = ({ id, title, description }: ICard) => {
           </svg>
         </a>
 
-        <a className="cursor-pointer block pl-2" onClick={() => deteleTask(id, router)}>
+        <a className="cursor-pointer block pl-2" onClick={() => deteleTask(id)}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
               strokeLinecap="round"

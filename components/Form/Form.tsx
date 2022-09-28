@@ -1,11 +1,19 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-const Form: React.FC = () => {
+interface IForm {
+  reloadList: () => void;
+}
+
+const Form: React.FC<IForm> = (props) => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
-  const router = useRouter();
+  const { reloadList } = props;
+
+  const loadTasksList = () => {
+    reloadList();
+  };
 
   const resetForm = () => {
     setTitle('');
@@ -24,7 +32,7 @@ const Form: React.FC = () => {
       });
 
       resetForm();
-      router.reload();
+      loadTasksList();
     } catch (error) {
       console.error(error);
     }
