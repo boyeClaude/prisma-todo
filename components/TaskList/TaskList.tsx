@@ -2,7 +2,7 @@ import React from "react";
 import Card from "../Card/Card";
 
 export interface ITask {
-  id: string;
+  id: string | any;
   title: string;
   description: string;
 }

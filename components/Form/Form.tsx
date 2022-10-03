@@ -1,19 +1,23 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { ITask } from "../TaskList/TaskList";
 
 interface IForm {
-  reloadList: () => void;
+  reloadList?: () => void;
+  buttonTitle?: string;
+  updateTask?: ITask;
 }
 
-const Form: React.FC<IForm> = (props) => {
+const Form: React.FC<IForm> = ({ reloadList, buttonTitle = "Add", updateTask }) => {
   const [tasks, setTasks] = useState({
-    title: "",
-    description: "",
+    title: "" || (updateTask && updateTask?.title),
+    description: "" || (updateTask && updateTask?.description),
   });
 
-  const { reloadList } = props;
+  const router = useRouter();
 
   const loadTasksList = () => {
-    reloadList();
+    reloadList && reloadList();
   };
 
   const resetForm = () => {
@@ -29,26 +33,54 @@ const Form: React.FC<IForm> = (props) => {
     setTasks((prevState) => ({ ...prevState, ...newTask }));
   };
 
-  const formSubmit = async (e: React.FormEvent) => {
+  const formSubmit = async (e: React.FormEvent, id?: any) => {
     e.preventDefault();
-    try {
-      await fetch("/api/tasks/create", {
-        method: "POST",
-        headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
-        mode: "cors",
-        body: JSON.stringify(tasks),
-      });
 
-      resetForm();
-      loadTasksList();
-    } catch (error) {
-      console.error(error);
+    // Update task
+    if (id) {
+      const updatedTask = { ...tasks, id: id };
+      console.log(`Update task : ${JSON.stringify(updatedTask)}`);
+      try {
+        await fetch(`/api/tasks/${id}`, {
+          method: "UPDATE",
+          headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+          mode: "cors",
+          body: JSON.stringify(updatedTask),
+        });
+
+        resetForm();
+        loadTasksList();
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await fetch("/api/tasks/create", {
+          method: "POST",
+          headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+          mode: "cors",
+          body: JSON.stringify(tasks),
+        });
+
+        resetForm();
+        loadTasksList();
+      } catch (error) {
+        console.error(error);
+      }
+
+      // console.log(`created task : ${JSON.stringify(tasks)}`);
     }
   };
 
   return (
     <div className="text-center text-lg leading-6 my-16 mx-0 ">
-      <form onSubmit={formSubmit} className="border-2 border-gray-200  text-left p-4 rounded-lg">
+      <form
+        onSubmit={(e) => {
+          updateTask && updateTask?.id ? formSubmit(e, updateTask?.id) : formSubmit(e);
+        }}
+        className="border-2 border-gray-200  text-left p-4 rounded-lg"
+      >
         <div className="mb-4">
           <label className="block text-lg" htmlFor="title">
             Title
@@ -85,7 +117,7 @@ const Form: React.FC<IForm> = (props) => {
           type="submit"
           disabled={!tasks.title && !tasks.description}
         >
-          Add
+          {buttonTitle}
         </button>
       </form>
     </div>

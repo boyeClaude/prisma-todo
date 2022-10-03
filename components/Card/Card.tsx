@@ -8,6 +8,7 @@ interface ICard {
 
 const Card: React.FC<ICard> = (props) => {
   const { reloadList, task } = props;
+  const router = useRouter();
 
   const loadTaskList = () => {
     reloadList && reloadList();
@@ -22,10 +23,14 @@ const Card: React.FC<ICard> = (props) => {
     loadTaskList();
   };
 
+  const goToUpdateTaskForm = (id: string) => {
+    router.push({ pathname: `/${id}` });
+  };
+
   return (
     <div className=" flex flex-col m-4 p-6 text-left border-2 border-solid border-gray-200 rounded-lg ">
       <div className="flex justify-end py-2">
-        <a className="cursor-pointer block">
+        <a className="cursor-pointer block" onClick={() => goToUpdateTaskForm(task.id)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
