@@ -42,8 +42,12 @@ const Form: React.FC<IForm> = ({ reloadList, buttonTitle = "Add", updateTask }) 
       console.log(`Update task : ${JSON.stringify(updatedTask)}`);
       try {
         await fetch(`/api/tasks/${id}`, {
-          method: "UPDATE",
-          headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
           mode: "cors",
           body: JSON.stringify(updatedTask),
         });
@@ -58,7 +62,11 @@ const Form: React.FC<IForm> = ({ reloadList, buttonTitle = "Add", updateTask }) 
       try {
         await fetch("/api/tasks/create", {
           method: "POST",
-          headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
           mode: "cors",
           body: JSON.stringify(tasks),
         });
