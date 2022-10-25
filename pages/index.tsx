@@ -1,33 +1,41 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import Footer from '../components/Footer/Footer';
-import Form from '../components/Form/Form';
-import TaskList, { ITask } from '../components/TaskList/TaskList';
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Footer from "../components/Footer/Footer";
+import Form from "../components/Form/Form";
+import TaskList, { ITask } from "../components/TaskList/TaskList";
 
 type IHome = {
   results: Array<ITask>;
 };
 
-const Home: React.FC<IHome> = (props) => {
+const Home: React.FC = () => {
   const [tasks, setTaks] = useState<Array<ITask>>([]);
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('/api/tasks', {
-        method: 'GET',
-        headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-        mode: 'cors',
+      const response = await fetch("/api/tasks", {
+        method: "GET",
+        headers: { "Content-type": "application/json", "Access-Control-Allow-Origin": "*" },
+        mode: "cors",
       });
       const result = await response.json();
       setTaks(result);
-      console.log('the result =>', result);
+      console.log("the result =>", result);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchTasks();
+    let isCancelled = false;
+
+    if (!isCancelled) {
+      fetchTasks();
+    }
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   return (
